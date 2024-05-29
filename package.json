@@ -1,0 +1,26 @@
+{
+  "name": "react-native-loading-indicator",
+  "version": "1.0.0",
+  "description": "An assortment of visually appealing loading indicators for React Native applications.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2xSamurai/react-native-loading-indicator.git"
+  },
+  "keywords": [
+    "react-native",
+    "loading",
+    "spinner",
+    "preloader",
+    "animation"
+  ],
+  "author": "Deepak Vijayan <deepakkvijayan@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/2xSamurai/react-native-loading-indicator/issues"
+  },
+  "homepage": "https://github.com/2xSamurai/react-native-loading-indicator#readme"
+}
