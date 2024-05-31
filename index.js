@@ -1,18 +1,20 @@
 import React from "react";
 import { StyleSheet, ActivityIndicator, Dimensions } from "react-native";
 
-export default function Preloader({ loading = false, style = {} }) {
+const LoadingIndicator = ({ loading = false, style = {} }) => {
 	return loading ? (
 		<ActivityIndicator
 			width={100}
-			style={[styles.preloader, style]}
+			style={[styles.indicator, style]}
 			color={"white"}
 		/>
 	) : null;
-}
+};
+
+export default LoadingIndicator;
 
 const styles = StyleSheet.create({
-	preloader: {
+	indicator: {
 		position: "absolute",
 		left: Dimensions.get("window").width / 2 - 10,
 		top: Dimensions.get("window").height / 2 - 10,
