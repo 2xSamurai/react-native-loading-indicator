@@ -1,81 +1,77 @@
 import React, { useEffect, useRef } from "react";
-import { StyleSheet, Dimensions, Animated, Easing } from "react-native";
+import { StyleSheet, Dimensions, Animated, Easing, View } from "react-native";
+import {
+	Style01,
+	Style02,
+} from "react-native-loading-indicator/lib/loading-styles";
 
 const LoadingIndicator = ({
 	loading = false,
-	indicatorStyles = {},
-	duration = 1200,
-	bezierFn = {
-		x1: 0.37,
-		y1: 0,
-		x2: 0.63,
-		y2: 1,
-	},
-	iterations = -1,
-	callback = () => {},
+	indicatorStyle,
+	duration,
+	bezierFn,
+	iterations,
+	callback,
+	animationName = "circleScale", //['squareFlip', 'circleScale']
 }) => {
-	const progress = useRef(new Animated.Value(0)).current;
-
-	useEffect(() => {
-		progress.setValue(0);
-		startAnimation();
-	}, [loading, indicatorStyles, duration, bezierFn, iterations, callback]);
-
-	const startAnimation = () => {
-		Animated.timing(progress, {
-			toValue: 1,
-			duration: duration,
-			useNativeDriver: true,
-			easing: Easing.inOut(
-				Easing.bezier(
-					bezierFn?.x1,
-					bezierFn?.y1,
-					bezierFn?.x2,
-					bezierFn?.y2
-				)
-			),
-			iterations: iterations,
-		}).start(callback);
+	const defaults = {
+		squareFlip: {
+			width: 40,
+			height: 40,
+		},
+		circleScale: {
+			width: 50,
+			height: 50,
+		},
 	};
-	const rotateX = progress.interpolate({
-		inputRange: [0, 0.5, 1],
-		outputRange: ["0deg", "-180deg", "-180deg"],
-		extrapolate: "clamp",
-	});
-
-	const rotateY = progress.interpolate({
-		inputRange: [0, 0.5, 1],
-		outputRange: ["0deg", "0deg", "-180deg"],
-		extrapolate: "clamp",
-	});
 
 	return loading ? (
-		<Animated.View
+		<View
 			style={[
-				styles.indicator,
+				styles.indicatorWrap,
 				{
-					transform: [
-						{ perspective: 120 },
-						{ rotateX: rotateX },
-						{ rotateY: rotateY },
-					],
+					left:
+						Dimensions.get("window").width / 2 -
+						defaults[animationName]?.width / 2,
+					top:
+						Dimensions.get("window").height / 2 -
+						defaults[animationName]?.height / 2,
 				},
-				indicatorStyles,
 			]}
-		></Animated.View>
+		>
+			{animationName === "squareFlip" ? (
+				<Style01
+					indicatorStyle={{
+						...defaults[animationName],
+						...indicatorStyle,
+					}}
+					duration={duration}
+					bezierFn={bezierFn}
+					iterations={iterations}
+					callback={callback}
+				/>
+			) : null}
+			{animationName === "circleScale" ? (
+				<Style02
+					indicatorStyle={{
+						...defaults[animationName],
+						...indicatorStyle,
+					}}
+					duration={duration}
+					bezierFn={bezierFn}
+					iterations={iterations}
+					callback={callback}
+				/>
+			) : null}
+		</View>
 	) : null;
 };
 
 export default LoadingIndicator;
 
 const styles = StyleSheet.create({
-	indicator: {
+	indicatorWrap: {
 		position: "absolute",
-		left: Dimensions.get("window").width / 2 - 20,
-		top: Dimensions.get("window").height / 2 - 20,
 		zIndex: 10,
-		width: 40,
-		height: 40,
-		backgroundColor: "white",
 	},
 });
