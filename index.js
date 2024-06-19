@@ -1,9 +1,6 @@
-import React, { useEffect, useRef } from "react";
-import { StyleSheet, Dimensions, Animated, Easing, View } from "react-native";
-import {
-	Style01,
-	Style02,
-} from "react-native-loading-indicator/lib/loading-styles";
+import React from "react";
+import { View } from "react-native";
+import { Style01, Style02, Style03 } from "./lib/loading-styles";
 
 const LoadingIndicator = ({
 	loading = false,
@@ -12,7 +9,7 @@ const LoadingIndicator = ({
 	bezierFn,
 	iterations,
 	callback,
-	animationName = "circleScale", //['squareFlip', 'circleScale']
+	animationName = "squareFlip", //['squareFlip', 'circleScale', 'squareWander']
 }) => {
 	const defaults = {
 		squareFlip: {
@@ -23,22 +20,14 @@ const LoadingIndicator = ({
 			width: 50,
 			height: 50,
 		},
+		squareWander: {
+			width: 12,
+			height: 12,
+		},
 	};
 
 	return loading ? (
-		<View
-			style={[
-				styles.indicatorWrap,
-				{
-					left:
-						Dimensions.get("window").width / 2 -
-						defaults[animationName]?.width / 2,
-					top:
-						Dimensions.get("window").height / 2 -
-						defaults[animationName]?.height / 2,
-				},
-			]}
-		>
+		<View>
 			{animationName === "squareFlip" ? (
 				<Style01
 					indicatorStyle={{
@@ -63,15 +52,20 @@ const LoadingIndicator = ({
 					callback={callback}
 				/>
 			) : null}
+			{animationName === "squareWander" ? (
+				<Style03
+					indicatorStyle={{
+						...defaults[animationName],
+						...indicatorStyle,
+					}}
+					duration={duration}
+					bezierFn={bezierFn}
+					iterations={iterations}
+					callback={callback}
+				/>
+			) : null}
 		</View>
 	) : null;
 };
 
 export default LoadingIndicator;
-
-const styles = StyleSheet.create({
-	indicatorWrap: {
-		position: "absolute",
-		zIndex: 10,
-	},
-});
